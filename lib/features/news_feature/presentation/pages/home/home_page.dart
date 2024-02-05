@@ -1,3 +1,4 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,7 +6,10 @@ import 'package:news_app/core/constants/vars.dart';
 import 'package:news_app/core/t_colors/t_colors.dart';
 import 'package:news_app/features/news_feature/presentation/widgets/articles_widget.dart';
 import 'package:news_app/features/news_feature/presentation/widgets/drawer_widget.dart';
+import 'package:news_app/features/news_feature/presentation/widgets/loading_top_trending.dart';
+import 'package:news_app/features/news_feature/presentation/widgets/loading_windget.dart';
 import 'package:news_app/features/news_feature/presentation/widgets/tabs_widget.dart';
+import 'package:news_app/features/news_feature/presentation/widgets/top_trending_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,6 +25,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -150,14 +155,33 @@ class _HomePageState extends State<HomePage> {
                         onChanged: (String? value) {},
                       ),
                     ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 100,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ArticlesWidget();
-                  },
+              if (newsType == NewsType.allNews)
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    // physics: const NeverScrollableScrollPhysics(),
+                    itemCount: 100,
+                    itemBuilder: (BuildContext context, int index) {
+                      return //const LoadingWindget();
+                          const ArticlesWidget();
+                    },
+                  ),
                 ),
-              )
+              if (newsType == NewsType.topTrending)
+                SizedBox(
+                  height: size.height * 0.6,
+                  child: Swiper(
+                    viewportFraction: 0.9,
+                    layout: SwiperLayout.STACK,
+                    itemWidth: size.width * 0.9,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return
+                          //LoadingTopTrending();
+                          const TopTrendingWidget();
+                    },
+                  ),
+                ),
             ],
           ),
         ),
