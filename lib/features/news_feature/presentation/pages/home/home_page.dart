@@ -10,6 +10,9 @@ import 'package:news_app/features/news_feature/presentation/widgets/loading_top_
 import 'package:news_app/features/news_feature/presentation/widgets/loading_windget.dart';
 import 'package:news_app/features/news_feature/presentation/widgets/tabs_widget.dart';
 import 'package:news_app/features/news_feature/presentation/widgets/top_trending_widget.dart';
+import 'package:page_transition/page_transition.dart';
+
+import '../search/search.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,7 +41,18 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             IconButton(
-                onPressed: () {}, icon: const Icon(CupertinoIcons.search))
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      child: SearchPage(),
+                      inheritTheme: true,
+                      ctx: context),
+                );
+              },
+              icon: const Icon(CupertinoIcons.search),
+            )
           ],
         ),
         drawer: const DrawerWidget(),
